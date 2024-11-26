@@ -64,7 +64,7 @@ else:
 
                 all_zero = all(sp.simplify(Gamma[rho, mu, nu]) == 0 for rho in range(n) for mu in range(n) for nu in range(n))
                 if all_zero:
-                    st.latex(r"\Gamma = 0 ")
+                    st.latex(r"\Gamma^{\rho}_{\mu \nu} = 0 ")
 
             # riemann calculation
             if st.button("Calculate Riemann Tensor"):
@@ -81,7 +81,24 @@ else:
 
                 all_zero = all(sp.simplify(Riemann[d, a, b, c]) == 0 for d in range(n) for a in range(n) for b in range(n) for c in range(n))
                 if all_zero:
-                    st.latex(r"R = 0 ")
+                    st.latex(r"R^{\rho}_{\mu \nu \sigma} = 0 ")
+
+            if st.button("Calculate Ricci Tensor and Scalar"):
+                st.write("### Ricci Tensor:")
+                Gamma = relativity.find_christoffel_symbols()
+                Riemann = relativity.find_riemann_tensor(Gamma)
+                Ricci_tensor = relativity.find_Ricci_tensor(Riemann)
+                Ricci_scalar = relativity.find_Ricci_scalar(Ricci_tensor)
+
+                for a in range(n):
+                    for b in range(n):
+                        if Ricci_tensor[a, b] != 0:
+                            st.latex(f"R_{{{latex(coords[a])} {latex(coords[b])}}} = {latex(Ricci_tensor[a, b])}")
+                all_zero = all(sp.simplify(Ricci_tensor[a, b]) == 0 for a in range(n) for b in range(n))
+                if all_zero:
+                    st.latex(r"R_{\mu \nu} = 0")
+                st.latex(f"R = {Ricci_scalar}")
+                
 
         except Exception as e:
             st.error(f"Error in processing the matrix or coordinates: {e}")

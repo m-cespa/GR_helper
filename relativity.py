@@ -36,3 +36,13 @@ class GeneralRelativity:
                         term4 = sum(Gamma[e, b, c] * Gamma[d, a, e] for e in range(self.n))
                         Riemann[d, a, b, c] = sp.simplify(-term1 + term2 + term3 - term4)
         return Riemann
+    
+    def find_Ricci_tensor(self, Riemann: sp.MutableDenseNDimArray):
+        Ricci = sp.MutableDenseNDimArray.zeros(self.n, self.n)
+        for a in range(self.n):
+            for b in range(self.n):
+                Ricci[a, b] = sum(Riemann[c, c, a, b] for c in range(self.n))
+        return Ricci
+
+    def find_Ricci_scalar(self, Ricci: sp.MutableDenseNDimArray):
+        return sp.simplify(self.g_inv.multiply_elementwise(Ricci).trace())
