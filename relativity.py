@@ -41,8 +41,12 @@ class GeneralRelativity:
         Ricci = sp.MutableDenseNDimArray.zeros(self.n, self.n)
         for a in range(self.n):
             for b in range(self.n):
-                Ricci[a, b] = sum(Riemann[c, c, a, b] for c in range(self.n))
+                Ricci[a, b] = sp.simplify(sum(Riemann[c, c, a, b] for c in range(self.n)))
         return Ricci
 
     def find_Ricci_scalar(self, Ricci: sp.MutableDenseNDimArray):
-        return sp.simplify(self.g_inv.multiply_elementwise(Ricci).trace())
+        scalar = sp.simplify(self.g_inv.multiply_elementwise(Ricci).trace())
+        
+        if scalar.is_number:
+            scalar = scalar.evalf() 
+        return scalar
