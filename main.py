@@ -100,7 +100,7 @@ else:
 
                 Ricci_scalar = relativity.find_Ricci_scalar(Ricci_tensor)
                 st.write('### Ricci Scalar:')
-                st.latex(f"R = {Ricci_scalar}")
+                st.latex(f"R = {latex(Ricci_scalar)}")
                 
         except Exception as e:
             st.error(f"Error in processing the matrix or coordinates: {e}")
