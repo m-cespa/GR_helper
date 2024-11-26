@@ -11,7 +11,7 @@ n = st.number_input("Enter the dimension of the metric (n x n)", min_value=2, ma
 
 st.write("### Define the Coordinates:")
 coords_input = st.text_input(
-    "Enter coordinate names separated by spaces (e.g.`x y z`)", value=" ".join([f"x{i+1}" for i in range(n)])
+    "Enter coordinate names separated by spaces (e.g.`x y z`)", value=" ".join([f"x{i}" for i in range(n)])
 )
 coords = sp.symbols(coords_input)
 st.write("### Input Metric Coefficients:")
@@ -38,7 +38,7 @@ else:
     all_filled = all(all(entry.strip() for entry in row) for row in metric_entries)
 
     if not all_filled:
-        st.warning("Please fill all metric entries before proceeding.")
+        st.warning("Please fill all metric coefficients before proceeding.")
     else:
         try:
             # Convert the metric entries into a symbolic matrix
