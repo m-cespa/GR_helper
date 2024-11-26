@@ -9,11 +9,6 @@ class GeneralRelativity:
         self.n = len(coords)
         self.g_inv = g.inv()
 
-        self.Gamma = self.find_christoffel_symbols()
-        self.Riemann = self.find_riemann_tensor(self.Gamma)
-        self.Ricci_tensor = self.find_Ricci_tensor(self.Riemann)
-        self.Ricci_scalar = self.find_Ricci_scalar(self.Ricci_tensor)
-
     def find_christoffel_symbols(self):
         Gamma = sp.MutableDenseNDimArray.zeros(self.n, self.n, self.n)
         for rho in range(self.n):

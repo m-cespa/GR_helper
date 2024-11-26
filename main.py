@@ -54,7 +54,7 @@ else:
             # christoffel calculation
             if st.button("Calculate Christoffel Symbols"):
                 st.write("### Christoffel Symbols:")
-                Gamma = relativity.Gamma
+                Gamma = relativity.find_christoffel_symbols()
 
                 for rho in range(n):
                     for mu in range(n):
@@ -69,7 +69,8 @@ else:
             # riemann calculation
             if st.button("Calculate Riemann Tensor"):
                 st.write("### Riemann Curvature Tensor:")
-                Riemann = relativity.Riemann
+                Gamma = relativity.find_christoffel_symbols()
+                Riemann = relativity.find_riemann_tensor(Gamma)
 
                 for d in range(n):
                     for a in range(n):
@@ -84,8 +85,9 @@ else:
 
             if st.button("Calculate Ricci Tensor and Scalar"):
                 st.write("### Ricci Tensor:")
-                Ricci_tensor = relativity.Ricci_tensor
-                Ricci_scalar = relativity.Ricci_scalar
+                Gamma = relativity.find_christoffel_symbols()
+                Riemann = relativity.find_riemann_tensor(Gamma)
+                Ricci_tensor = relativity.find_Ricci_tensor(Riemann)
 
                 for a in range(n):
                     for b in range(n):
@@ -96,6 +98,7 @@ else:
                 if all_zero:
                     st.latex(r"R_{\mu \nu} = 0")
 
+                Ricci_scalar = relativity.find_Ricci_scalar(Ricci_tensor)
                 st.write('### Ricci Scalar:')
                 st.latex(f"R = {Ricci_scalar}")
                 
