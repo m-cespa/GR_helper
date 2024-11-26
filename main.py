@@ -11,7 +11,7 @@ n = st.number_input("Enter the dimension of the metric (n x n):", min_value=1, m
 
 st.write("### Define the Coordinates:")
 coords_input = st.text_input(
-    "Enter coordinate names separated by spaces (e.g., `x y z`):", value=" ".join([f"x{i+1}" for i in range(n)])
+    "Enter coordinate names separated by spaces (e.g.`x y z`):", value=" ".join([f"x{i+1}" for i in range(n)])
 )
 coords = sp.symbols(coords_input)
 
@@ -33,48 +33,53 @@ else:
         
         metric_entries.append(row_entries)
 
-    try:
-        # read each string entry from the metric_entries list and convert to symbolic
-        sympy_matrix = sp.Matrix([
-            [sp.sympify(entry) for entry in row]for row in metric_entries
-        ])
+    all_filled = all(all(entry.strip() for entry in row) for row in metric_entries)
 
-        st.write("SymPy Matrix Representation:")
-        st.latex(sp.latex(sympy_matrix))
+    if not all_filled:
+        st.warning("Please fill all metric entries before proceeding.")
+    else:
+        try:
+            # Convert the metric entries into a symbolic matrix
+            sympy_matrix = sp.Matrix([
+                [sp.sympify(entry) for entry in row] for row in metric_entries
+            ])
 
-        relativity = GeneralRelativity(coords, sympy_matrix)
+            st.write("SymPy Matrix Representation:")
+            st.latex(sp.latex(sympy_matrix))
 
-        # christoffel calculation
-        if st.button("Calculate Christoffel Symbols"):
-            st.write("### Christoffel Symbols:")
-            Gamma = relativity.find_christoffel_symbols()
+            relativity = GeneralRelativity(coords, sympy_matrix)
 
-            for rho in range(n):
-                for mu in range(n):
-                    for nu in range(n):
-                        if Gamma[rho, mu, nu] != 0:
-                            st.latex(f"\\Gamma^{{{latex(coords[rho])}}}_{{{latex(coords[mu])} {latex(coords[nu])}}} = {latex(Gamma[rho, mu, nu])}")
+            # christoffel calculation
+            if st.button("Calculate Christoffel Symbols"):
+                st.write("### Christoffel Symbols:")
+                Gamma = relativity.find_christoffel_symbols()
 
-            all_zero = all(sp.simplify(Gamma[rho, mu, nu]) == 0 for rho in range(n) for mu in range(n) for nu in range(n))
-            if all_zero:
-                st.latex(r" \text{All } \\Gamma = 0 ")
+                for rho in range(n):
+                    for mu in range(n):
+                        for nu in range(n):
+                            if Gamma[rho, mu, nu] != 0:
+                                st.latex(f"\\Gamma^{{{latex(coords[rho])}}}_{{{latex(coords[mu])} {latex(coords[nu])}}} = {latex(Gamma[rho, mu, nu])}")
 
-        # riemann calculation
-        if st.button("Calculate Riemann Tensor"):
-            st.write("### Riemann Curvature Tensor:")
-            Gamma = relativity.find_christoffel_symbols()
-            Riemann = relativity.find_riemann_tensor(Gamma)
+                all_zero = all(sp.simplify(Gamma[rho, mu, nu]) == 0 for rho in range(n) for mu in range(n) for nu in range(n))
+                if all_zero:
+                    st.latex(r" \text{All } \\Gamma = 0 ")
 
-            for d in range(n):
-                for a in range(n):
-                    for b in range(n):
-                        for c in range(n):
-                            if Riemann[d, a, b, c] != 0:
-                                st.latex(f"R^{{{latex(coords[d])}}}_{{{latex(coords[a])} {latex(coords[b])} {latex(coords[c])}}} = {latex(Riemann[d, a, b, c])}")
+            # riemann calculation
+            if st.button("Calculate Riemann Tensor"):
+                st.write("### Riemann Curvature Tensor:")
+                Gamma = relativity.find_christoffel_symbols()
+                Riemann = relativity.find_riemann_tensor(Gamma)
 
-            all_zero = all(sp.simplify(Riemann[d, a, b, c]) == 0 for d in range(n) for a in range(n) for b in range(n) for c in range(n))
-            if all_zero:
-                st.latex(r" \text{All } R = 0 ")
+                for d in range(n):
+                    for a in range(n):
+                        for b in range(n):
+                            for c in range(n):
+                                if Riemann[d, a, b, c] != 0:
+                                    st.latex(f"R^{{{latex(coords[d])}}}_{{{latex(coords[a])} {latex(coords[b])} {latex(coords[c])}}} = {latex(Riemann[d, a, b, c])}")
 
-    except Exception as e:
-        st.error(f"Error in processing the matrix or coordinates: {e}")
+                all_zero = all(sp.simplify(Riemann[d, a, b, c]) == 0 for d in range(n) for a in range(n) for b in range(n) for c in range(n))
+                if all_zero:
+                    st.latex(r" \text{All } R = 0 ")
+
+        except Exception as e:
+            st.error(f"Error in processing the matrix or coordinates: {e}")
