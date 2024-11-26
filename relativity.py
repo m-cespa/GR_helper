@@ -45,8 +45,7 @@ class GeneralRelativity:
         return Ricci
 
     def find_Ricci_scalar(self, Ricci: sp.MutableDenseNDimArray):
-        scalar = sp.simplify(self.g_inv * Ricci)
-        scalar = scalar.trace()
+        scalar = sp.simplify(sp.tensorcontraction(self.g_inv, Ricci))
 
         if isinstance(scalar, sp.Matrix):
             scalar = scalar[0]
