@@ -14,7 +14,8 @@ coords_input = st.text_input(
     "Enter coordinate names separated by spaces (e.g.`x y z`):", value=" ".join([f"x{i+1}" for i in range(n)])
 )
 coords = sp.symbols(coords_input)
-st.write("### Input metric coefficients in Python syntax (e.g. `y**2` or `sin(theta)**2`)")
+st.write("### Input Metric Coefficients:")
+st.write("Write the coefficients in Python syntax (e.g. `y**2` or `sin(theta)**2`)")
 
 if len(coords) != n:
     st.error(f"Please provide exactly {n} coordinate names.")
