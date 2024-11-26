@@ -7,7 +7,7 @@ from relativity import GeneralRelativity
 st.title("General Relativity Helper")
 
 # user input for metric dimensions
-n = st.number_input("Enter the dimension of the metric (n x n)", min_value=1, max_value=10, step=1, value=2)
+n = st.number_input("Enter the dimension of the metric (n x n)", min_value=2, max_value=10, step=1, value=2)
 
 st.write("### Define the Coordinates:")
 coords_input = st.text_input(
@@ -46,7 +46,7 @@ else:
                 [sp.sympify(entry) for entry in row] for row in metric_entries
             ])
 
-            st.write("SymPy Matrix Representation:")
+            st.write("Metric Matrix Representation:")
             st.latex(sp.latex(sympy_matrix))
 
             relativity = GeneralRelativity(coords, sympy_matrix)
