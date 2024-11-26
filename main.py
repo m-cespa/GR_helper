@@ -7,11 +7,11 @@ from relativity import GeneralRelativity
 st.title("General Relativity Helper")
 
 # user input for metric dimensions
-n = st.number_input("Enter the dimension of the metric (n x n):", min_value=1, max_value=10, step=1, value=2)
+n = st.number_input("Enter the dimension of the metric (n x n)", min_value=1, max_value=10, step=1, value=2)
 
 st.write("### Define the Coordinates:")
 coords_input = st.text_input(
-    "Enter coordinate names separated by spaces (e.g.`x y z`):", value=" ".join([f"x{i+1}" for i in range(n)])
+    "Enter coordinate names separated by spaces (e.g.`x y z`)", value=" ".join([f"x{i+1}" for i in range(n)])
 )
 coords = sp.symbols(coords_input)
 st.write("### Input Metric Coefficients:")
@@ -64,7 +64,7 @@ else:
 
                 all_zero = all(sp.simplify(Gamma[rho, mu, nu]) == 0 for rho in range(n) for mu in range(n) for nu in range(n))
                 if all_zero:
-                    st.latex(r" \text{All } \\Gamma = 0 ")
+                    st.latex(r"\Gamma = 0 ")
 
             # riemann calculation
             if st.button("Calculate Riemann Tensor"):
@@ -81,7 +81,7 @@ else:
 
                 all_zero = all(sp.simplify(Riemann[d, a, b, c]) == 0 for d in range(n) for a in range(n) for b in range(n) for c in range(n))
                 if all_zero:
-                    st.latex(r" \text{All } R = 0 ")
+                    st.latex(r"R = 0 ")
 
         except Exception as e:
             st.error(f"Error in processing the matrix or coordinates: {e}")
