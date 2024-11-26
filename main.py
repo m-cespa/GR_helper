@@ -15,7 +15,6 @@ coords_input = st.text_input(
 )
 coords = sp.symbols(coords_input)
 
-
 if len(coords) != n:
     st.error(f"Please provide exactly {n} coordinate names.")
 else:
