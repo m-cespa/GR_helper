@@ -94,6 +94,7 @@ else:
                     for b in range(n):
                         if Ricci_tensor[a, b] != 0:
                             st.latex(f"R_{{{latex(coords[a])} {latex(coords[b])}}} = {latex(Ricci_tensor[a, b])}")
+
                 all_zero = all(sp.simplify(Ricci_tensor[a, b]) == 0 for a in range(n) for b in range(n))
                 if all_zero:
                     st.latex(r"R_{\mu \nu} = 0")
@@ -101,6 +102,5 @@ else:
                 st.write('### Ricci Scalar:')
                 st.latex(f"R = {Ricci_scalar}")
                 
-
         except Exception as e:
             st.error(f"Error in processing the matrix or coordinates: {e}")
