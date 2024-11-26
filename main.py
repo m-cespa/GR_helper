@@ -97,6 +97,8 @@ else:
                 all_zero = all(sp.simplify(Ricci_tensor[a, b]) == 0 for a in range(n) for b in range(n))
                 if all_zero:
                     st.latex(r"R_{\mu \nu} = 0")
+
+                st.write('### Ricci Scalar:')
                 st.latex(f"R = {Ricci_scalar}")
                 
 
